@@ -1,4 +1,16 @@
 {
   "name": "altinn-studio-frontend-validator",
-  "packageManager": "yarn@4.5.0"
+  "packageManager": "yarn@4.5.0",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "webpack --mode production && yarn copy-html",
+    "copy-html": "copyfiles --flat src/index.html docs"
+  },
+  "devDependencies": {
+    "copyfiles": "^2.4.1",
+    "css-loader": "^7.1.2",
+    "style-loader": "^4.0.0",
+    "webpack": "^5.97.1",
+    "webpack-cli": "^6.0.1"
+  }
 }
