@@ -1,0 +1,1 @@
+# altinn-studio-frontend-validator
