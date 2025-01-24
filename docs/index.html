@@ -3,17 +3,22 @@
     <head>
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <title>Page Title</title>
+        <title>Altinn Frontend Validator</title>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
-        <link rel="stylesheet" type="text/css" media="screen" href="main.css" />
+        <link rel="stylesheet" type="text/css" href="main.css" />
+        <script type="module" src="main.js"></script>
     </head>
     <body>
         <div>
-            <label for="resourceFilesUpload">Select resource files to upload:</label>
+            <label for="resourceFilesUpload"
+                >Select resource files to upload:</label
+            >
             <input id="resourceFilesUpload" multiple type="file" />
         </div>
         <div>
-            <label for="layoutFilesUpload">Select layout files to upload:</label>
+            <label for="layoutFilesUpload"
+                >Select layout files to upload:</label
+            >
             <input id="layoutFilesUpload" multiple type="file" />
         </div>
         <button id="validateButton">Validate</button>
@@ -21,8 +26,5 @@
 {}
 </pre
         >
-        <script src="scripts/fileHandlers.js"></script>
-        <script src="scripts/validations.js"></script>
-        <script src="scripts/init.js"></script>
     </body>
 </html>
