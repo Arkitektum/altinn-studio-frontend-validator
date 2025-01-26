@@ -9,13 +9,20 @@
         <script type="module" src="main.js"></script>
     </head>
     <body>
-        <div id="resourceFilesDropzone" class="dropzone">
-            <h2>Drag and drop resource files here</h2>
-        </div>
-        <div id="layoutFilesDropzone" class="dropzone">
-            <h2>Drag and drop layout files here</h2>
-        </div>
-        <button id="validateButton">Validate</button>
-        <section id="validationResults"></section>
+        <main class="content-container">
+            <h1>Altinn Frontend Validator</h1>
+            <div id="resourceFilesDropzone" class="dropzone">
+                <span class="dropzone-info"
+                    >Drag and drop resource files here</span
+                >
+            </div>
+            <div id="layoutFilesDropzone" class="dropzone">
+                <span class="dropzone-info"
+                    >Drag and drop layout files here</span
+                >
+            </div>
+            <button id="validateButton">Validate</button>
+            <section id="validationResults" class="results-container"></section>
+        </main>
     </body>
 </html>

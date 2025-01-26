@@ -35,6 +35,11 @@ body {
     margin: 20px 0;
     padding: 20px;
     text-align: center;
+    .dropzone-info {
+        font-size: 24px;
+        font-weight: bold;
+        z-index: -1;
+    }
     &.drag-over {
         border-color: #2196f3;
     }
@@ -94,6 +99,7 @@ button {
         }
         summary {
             cursor: pointer;
+            padding-block: 8px;
         }
         &.filetype {
             &:not(:last-of-type) {
@@ -114,6 +120,9 @@ button {
             }
         }
         .validationType {
+            .validationMessage {
+                padding-block: 8px;
+            }
             &.errors {
                 background-color: #ffcdd2;
                 summary {
