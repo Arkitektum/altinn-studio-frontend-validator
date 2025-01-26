@@ -83,6 +83,7 @@ function renderValidationTypes(file) {
 function renderValidationType(validationTypeKey, validationType) {
     const validationTypeElement = document.createElement("details");
     validationTypeElement.classList.add("validationType");
+    validationTypeElement.classList.add(validationTypeKey);
     validationTypeElement.open = true;
 
     const summaryElement = document.createElement("summary");
