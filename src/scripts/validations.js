@@ -1,17 +1,17 @@
-export function validateFiles(event, uploadedFiles, validationResults) {
+export function validateFiles(uploadedFiles) {
+    const validationResults = {};
     Object.keys(uploadedFiles).forEach((type) => {
         const filesOfType = uploadedFiles[type];
+        if (!validationResults[type]) {
+            validationResults[type] = {};
+        }
         Object.keys(filesOfType).forEach((name) => {
             const file = filesOfType[name];
             const validationResult = validateFile(file, type, uploadedFiles);
             validationResults[type][name] = validationResult;
         });
     });
-    document.getElementById("validationResults").innerText = JSON.stringify(
-        validationResults,
-        null,
-        2
-    );
+    return validationResults;
 }
 
 function validateFile(file, type, uploadedFiles) {

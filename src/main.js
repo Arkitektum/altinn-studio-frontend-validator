@@ -5,11 +5,6 @@ const uploadedFiles = {
     layoutFiles: {},
 };
 
-const validationResults = {
-    resourceFiles: {},
-    layoutFiles: {},
-};
-
 window.onload = function () {
     init(uploadedFiles, validationResults);
 };
