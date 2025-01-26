@@ -4,13 +4,50 @@
 
 body {
     background-color: #f0f0f0;
+    color: rgba(0, 0, 0, 0.87);
     font-family: "Arial", sans-serif;
     margin: 0;
     padding: 0;
 }
 
+.dropzone {
+    border: 2px dashed #c8c8c8;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    margin: 20px;
+    padding: 20px;
+    text-align: center;
+    &.drag-over {
+        border-color: #2196f3;
+    }
+    .file-list {
+        margin-top: 20px;
+        .file {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            .file-name {
+                margin-left: 10px;
+            }
+        }
+    }
+}
+
 details {
     *[style*="--indent"] {
         padding-left: calc(var(--indentSize) * var(--indent));
+    }
+    .error {
+        color: red;
+    }
+    .warning {
+        color: orange;
+    }
+    .info {
+        color: blue;
     }
 }

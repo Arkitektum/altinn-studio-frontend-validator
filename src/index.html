@@ -9,17 +9,11 @@
         <script type="module" src="main.js"></script>
     </head>
     <body>
-        <div>
-            <label for="resourceFilesUpload"
-                >Select resource files to upload:</label
-            >
-            <input id="resourceFilesUpload" multiple type="file" />
+        <div id="resourceFilesDropzone" class="dropzone">
+            <h2>Drag and drop resource files here</h2>
         </div>
-        <div>
-            <label for="layoutFilesUpload"
-                >Select layout files to upload:</label
-            >
-            <input id="layoutFilesUpload" multiple type="file" />
+        <div id="layoutFilesDropzone" class="dropzone">
+            <h2>Drag and drop layout files here</h2>
         </div>
         <button id="validateButton">Validate</button>
         <section id="validationResults"></section>
