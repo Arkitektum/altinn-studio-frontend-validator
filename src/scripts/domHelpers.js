@@ -3,6 +3,7 @@ import { getResourceText } from "./resourceHelpers.js";
 export function renderValidationResults(validationResults) {
     const validationResultsElement =
         document.getElementById("validationResults");
+    validationResultsElement.innerHTML = "";
     const fileTypesElement = renderFileTypes(validationResults);
     validationResultsElement.appendChild(fileTypesElement);
 }
