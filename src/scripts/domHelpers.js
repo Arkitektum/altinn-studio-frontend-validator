@@ -15,6 +15,12 @@ function renderFileTypes(validationResults) {
         const filetype = validationResults[fileTypeKey];
         const fileTypeElement = renderFileType(fileTypeKey, filetype);
         fileTypesElement.appendChild(fileTypeElement);
+        const notLastFileType =
+            fileTypes.indexOf(fileTypeKey) < fileTypes.length - 1;
+        if (notLastFileType) {
+            const separatorElement = document.createElement("hr");
+            fileTypesElement.appendChild(separatorElement);
+        }
     });
     return fileTypesElement;
 }
