@@ -1,3 +1,5 @@
+import { getResourceText } from "./resourceHelpers.js";
+
 export function renderValidationResults(validationResults) {
     const validationResultsElement =
         document.getElementById("validationResults");
@@ -23,7 +25,9 @@ function renderFileType(fileTypeKey, filetype) {
     fileTypeElement.open = true;
 
     const summaryElement = document.createElement("summary");
-    summaryElement.textContent = fileTypeKey;
+    summaryElement.textContent = `${getResourceText(fileTypeKey)} (${
+        Object.keys(filetype).length
+    })`;
     summaryElement.style.setProperty("--indent", 0);
 
     fileTypeElement.appendChild(summaryElement);
@@ -82,7 +86,9 @@ function renderValidationType(validationTypeKey, validationType) {
     validationTypeElement.open = true;
 
     const summaryElement = document.createElement("summary");
-    summaryElement.textContent = validationTypeKey;
+    summaryElement.textContent = `${getResourceText(validationTypeKey)} (${
+        validationType.length
+    })`;
     summaryElement.style.setProperty("--indent", 2);
 
     validationTypeElement.appendChild(summaryElement);
