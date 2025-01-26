@@ -1,6 +1,161 @@
+:root {
+    --indentSize: 1em;
+    --baseIndentSize: 16px;
+    --max-content-width: 1200px;
+    --default-background-transition: background-color 150ms
+        cubic-bezier(0.4, 0, 0.2, 1);
+    --default-font-family: "Arial", sans-serif;
+}
+
 body {
     background-color: #f0f0f0;
-    font-family: "Arial", sans-serif;
+    background-color: rgba(246, 247, 248, 0.5);
+    color: rgba(0, 0, 0, 0.87);
+    font-family: var(--default-font-family);
+    font-size: 18px;
+    line-height: 1.5em;
     margin: 0;
     padding: 0;
+}
+
+.content-container {
+    max-width: var(--max-content-width);
+    margin: auto;
+    padding: 20px;
+}
+
+.dropzone {
+    border: 2px dashed #c8c8c8;
+    border-radius: 4px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 200px;
+    margin: 20px 0;
+    padding: 20px;
+    text-align: center;
+    .dropzone-info {
+        font-size: 24px;
+        font-weight: bold;
+        z-index: -1;
+    }
+    &.drag-over {
+        border-color: #2196f3;
+    }
+    .file-list {
+        margin-top: 20px;
+        .file {
+            display: flex;
+            align-items: center;
+            margin: 10px 0;
+            .file-name {
+                margin-left: 10px;
+            }
+        }
+    }
+}
+
+hr {
+    border-color: rgba(0, 0, 0, 0.12);
+    border-width: 0 0 thin;
+    border-style: solid;
+}
+
+button {
+    cursor: pointer;
+    appearance: none;
+    font-family: var(--default-font-family);
+    font-size: 22px;
+    line-height: 1.75;
+    text-transform: uppercase;
+    min-width: 64px;
+    color: #fff;
+    background-color: rgba(25, 118, 210, 1);
+    box-shadow: rgba(0, 0, 0, 0.2) 0px 3px 1px -2px,
+        rgba(0, 0, 0, 0.14) 0px 2px 2px 0px, rgba(0, 0, 0, 0.12) 0px 1px 5px 0px;
+    padding: 6px 16px;
+    border: none;
+    border-radius: 4px;
+    transition: background-color 250ms cubic-bezier(0.4, 0, 0.2, 1),
+        box-shadow 250ms cubic-bezier(0.4, 0, 0.2, 1),
+        border-color 250ms cubic-bezier(0.4, 0, 0.2, 1);
+    &:hover {
+        background-color: rgba(25, 118, 210, 0.9);
+    }
+}
+
+.results-container {
+    padding: 8px 0;
+    margin: 20px auto;
+    line-height: 2em;
+    transition: var(--default-background-transition);
+
+    details {
+        *[style*="--indent"] {
+            padding-left: calc(
+                var(--indentSize) * var(--indent) + var(--baseIndentSize)
+            );
+        }
+        summary {
+            cursor: pointer;
+            padding-block: 8px;
+        }
+        &.filetype {
+            &:not(:last-of-type) {
+                margin-bottom: 20px;
+            }
+            > summary {
+                font-size: 24px;
+                font-weight: bold;
+            }
+        }
+        &.file {
+            &:not(:last-of-type) {
+                margin-bottom: 10px;
+            }
+            > summary {
+                font-size: 20px;
+                font-weight: bold;
+            }
+        }
+        .validationType {
+            .validationMessage {
+                padding-block: 8px;
+            }
+            &.errors {
+                background-color: #ffcdd2;
+                summary {
+                    background-color: rgba(183, 28, 28, 1);
+                    color: white;
+                    transition: var(--default-background-transition);
+                    &:hover {
+                        background-color: rgba(183, 28, 28, 0.9);
+                    }
+                }
+            }
+            &.warnings {
+                background-color: rgb(255, 224, 178);
+                summary {
+                    background-color: rgba(230, 81, 0, 1);
+                    color: white;
+                    transition: var(--default-background-transition);
+                    &:hover {
+                        background-color: rgba(230, 81, 0, 0.9);
+                    }
+                }
+            }
+            &.infos {
+                background-color: rgb(187, 222, 251);
+                summary {
+                    background-color: rgba(13, 71, 161, 1);
+                    color: white;
+                    transition: var(--default-background-transition);
+                    &:hover {
+                        background-color: rgba(13, 71, 161, 0.9);
+                    }
+                }
+            }
+        }
+    }
 }

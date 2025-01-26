@@ -9,22 +9,20 @@
         <script type="module" src="main.js"></script>
     </head>
     <body>
-        <div>
-            <label for="resourceFilesUpload"
-                >Select resource files to upload:</label
-            >
-            <input id="resourceFilesUpload" multiple type="file" />
-        </div>
-        <div>
-            <label for="layoutFilesUpload"
-                >Select layout files to upload:</label
-            >
-            <input id="layoutFilesUpload" multiple type="file" />
-        </div>
-        <button id="validateButton">Validate</button>
-        <pre id="validationResults">
-{}
-</pre
-        >
+        <main class="content-container">
+            <h1>Altinn Frontend Validator</h1>
+            <div id="resourceFilesDropzone" class="dropzone">
+                <span class="dropzone-info"
+                    >Drag and drop resource files here</span
+                >
+            </div>
+            <div id="layoutFilesDropzone" class="dropzone">
+                <span class="dropzone-info"
+                    >Drag and drop layout files here</span
+                >
+            </div>
+            <button id="validateButton">Validate</button>
+            <section id="validationResults" class="results-container"></section>
+        </main>
     </body>
 </html>
