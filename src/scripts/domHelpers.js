@@ -78,11 +78,13 @@ function renderValidationTypes(file) {
     validationTypesElement.classList.add("validationTypes");
     validationTypes.forEach((validationTypeKey) => {
         const validationType = file[validationTypeKey];
-        const validationTypeElement = renderValidationType(
-            validationTypeKey,
-            validationType
-        );
-        validationTypesElement.appendChild(validationTypeElement);
+        if (!!validationType.length) {
+            const validationTypeElement = renderValidationType(
+                validationTypeKey,
+                validationType
+            );
+            validationTypesElement.appendChild(validationTypeElement);
+        }
     });
     return validationTypesElement;
 }
