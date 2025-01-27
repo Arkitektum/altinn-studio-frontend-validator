@@ -27,30 +27,46 @@ body {
 .dropzone {
     border: 2px dashed #c8c8c8;
     border-radius: 4px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    height: 200px;
+    min-height: 200px;
     margin: 20px 0;
     padding: 20px;
-    text-align: center;
     .dropzone-info {
         font-size: 24px;
         font-weight: bold;
+        position: relative;
         z-index: -1;
+        display: block;
+        text-align: center;
+        margin-top: 80px;
     }
     &.drag-over {
         border-color: #2196f3;
     }
     .file-list {
-        margin-top: 20px;
+        padding: 0;
+        list-style: none;
         .file {
-            display: flex;
-            align-items: center;
             margin: 10px 0;
+            padding: 8px;
+            &:not(.has-errors) {
+                background-color: #f2f2f2;
+            }
+            &.has-errors {
+                background-color: #ffcdd2;
+            }
             .file-name {
                 margin-left: 10px;
+            }
+            .error-list {
+                list-style: none;
+                padding: 0;
+                .error {
+                    padding: 0 8px;
+                    font-size: 14px;
+                    .error-label {
+                        font-weight: bold;
+                    }
+                }
             }
         }
     }
