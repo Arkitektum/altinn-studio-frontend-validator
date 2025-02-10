@@ -61,6 +61,18 @@ function renderFile(fileKey, file) {
     fileElement.classList.add("file");
     fileElement.open = true;
 
+    let hasValidationMessages = false;
+    Object.keys(file).forEach((validationTypeKey) => {
+        if (file[validationTypeKey].length) {
+            hasValidationMessages = true;
+        }
+    });
+    if (!hasValidationMessages) {
+        fileElement.classList.add("noValidationMessages");
+    } else {
+        fileElement.classList.add("hasValidationMessages");
+    }
+
     const summaryElement = document.createElement("summary");
     summaryElement.textContent = fileKey;
     summaryElement.style.setProperty("--indent", 1);

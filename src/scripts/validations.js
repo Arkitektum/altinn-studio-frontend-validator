@@ -1,3 +1,5 @@
+import { getValueFromDataKey } from "./resourceHelpers.js";
+
 const systemResourceKeys = ["pdfPreviewText", "appOwner", "appName"];
 
 export function validateFiles(uploadedFiles) {
@@ -16,10 +18,44 @@ export function validateFiles(uploadedFiles) {
     return validationResults;
 }
 
+function validateLayoutResourceBinding(
+    uploadedFiles,
+    validationMessages,
+    layoutComponent,
+    key
+) {
+    const resourceBinding = getValueFromDataKey(layoutComponent, key);
+    const isResourceId = resourceBinding.startsWith("resource.");
+    const isEmpty = resourceBinding === "";
+    if (isResourceId) {
+        const isMissingInFile = resourceIsMissing(
+            resourceBinding,
+            uploadedFiles
+        );
+        Object.keys(isMissingInFile).forEach((resourceFileName) => {
+            if (isMissingInFile[resourceFileName]) {
+                validationMessages.errors.push(
+                    `Resource binding "${resourceBinding}" for key "${key}" in "${layoutComponent.id}" is missing in file "${resourceFileName}"`
+                );
+            }
+        });
+    } else if (isEmpty) {
+        validationMessages.infos.push(
+            `Resource binding for key "${key}" in "${layoutComponent.id}" is empty`
+        );
+    } else {
+        validationMessages.warnings.push(
+            `Resource binding "${resourceBinding}" for key "${key}" in "${layoutComponent.id}" is not a valid resource ID or has a fixed value`
+        );
+    }
+}
+
 function validateFile(file, type, uploadedFiles) {
-    const errors = [];
-    const warnings = [];
-    const infos = [];
+    const validationMessages = {
+        errors: [],
+        warnings: [],
+        infos: [],
+    };
     if (type === "resourceFiles") {
         let hasPdfPreviewText = false;
         let pdfPreviewTextIsEmpty = false;
@@ -31,7 +67,9 @@ function validateFile(file, type, uploadedFiles) {
             const isSystemResource = systemResourceKeys.includes(resource.id);
             if (!isSystemResource) {
                 if (resourceIsUnused(resource, uploadedFiles)) {
-                    warnings.push(`Resource "${resource.id}" is unused`);
+                    validationMessages.warnings.push(
+                        `Resource "${resource.id}" is unused`
+                    );
                 }
             } else {
                 if (resource.id === "pdfPreviewText") {
@@ -47,66 +85,59 @@ function validateFile(file, type, uploadedFiles) {
             }
         });
         if (!hasPdfPreviewText) {
-            errors.push(
+            validationMessages.errors.push(
                 'Resource with id "pdfPreviewText" is missing and will be replaced with a default value'
             );
         } else if (pdfPreviewTextIsEmpty) {
-            warnings.push(
+            validationMessages.warnings.push(
                 'Resource with id "pdfPreviewText" is empty and will maybe be replaced with a default value'
             );
         }
         if (!hasAppOwner) {
-            errors.push(
+            validationMessages.errors.push(
                 'Resource with id "appOwner" is missing and is required'
             );
         } else if (appOwnerIsEmpty) {
-            warnings.push('Resource with id "appOwner" is empty');
+            validationMessages.warnings.push(
+                'Resource with id "appOwner" is empty'
+            );
         }
         if (!hasAppName) {
-            errors.push(
+            validationMessages.errors.push(
                 'Resource with id "appName" is missing and is required'
             );
         } else if (appNameIsEmpty) {
-            warnings.push('Resource with id "appName" is empty');
+            validationMessages.warnings.push(
+                'Resource with id "appName" is empty'
+            );
         }
     } else if (type === "layoutFiles") {
         file?.data?.layout?.forEach((layoutComponent) => {
             layoutComponent?.textResourceBindings &&
                 Object.keys(layoutComponent.textResourceBindings).forEach(
                     (key) => {
-                        const resourceBinding =
-                            layoutComponent.textResourceBindings[key];
-                        const isResourceId =
-                            resourceBinding.startsWith("resource.");
-                        const isEmpty = resourceBinding === "";
-                        if (isResourceId) {
-                            const isMissingInFile = resourceIsMissing(
-                                resourceBinding,
-                                uploadedFiles
-                            );
-                            Object.keys(isMissingInFile).forEach(
-                                (resourceFileName) => {
-                                    if (isMissingInFile[resourceFileName]) {
-                                        errors.push(
-                                            `Resource binding for the key "${resourceBinding}" in "${layoutComponent.id}" is missing in file "${resourceFileName}"`
-                                        );
-                                    }
-                                }
-                            );
-                        } else if (isEmpty) {
-                            infos.push(
-                                `Resource binding for key "${key}" in "${layoutComponent.id}" is empty`
-                            );
-                        } else {
-                            warnings.push(
-                                `Resource binding for key "${key}" in "${layoutComponent.id}" is not a valid resource ID or has a fixed value`
-                            );
-                        }
+                        validateLayoutResourceBinding(
+                            uploadedFiles,
+                            validationMessages,
+                            layoutComponent,
+                            `textResourceBindings.${key}`
+                        );
                     }
                 );
+            layoutComponent?.options &&
+                layoutComponent.options.forEach((option, optionIndex) => {
+                    if (option.label) {
+                        validateLayoutResourceBinding(
+                            uploadedFiles,
+                            validationMessages,
+                            layoutComponent,
+                            `options[${optionIndex}].label`
+                        );
+                    }
+                });
         });
     }
-    return { errors, warnings, infos };
+    return validationMessages;
 }
 
 function resourceIsMissing(resourceId, uploadedFiles) {
@@ -126,7 +157,10 @@ function resourceIsMissing(resourceId, uploadedFiles) {
 }
 
 function resourceIsUnused(resource, uploadedFiles) {
-    let isUnused = true;
+    let isUnused = {
+        textResourceBindings: true,
+        options: true,
+    };
     Object.keys(uploadedFiles.layoutFiles).forEach((layoutFileName) => {
         const layoutFile = uploadedFiles.layoutFiles[layoutFileName];
         const layoutComponents = layoutFile?.data?.layout;
@@ -142,7 +176,15 @@ function resourceIsUnused(resource, uploadedFiles) {
                         }
                     }
                 );
+            layoutComponent?.options &&
+                layoutComponent.options.forEach((option) => {
+                    const resourceBindingKey = option.label;
+                    if (resourceBindingKey === resource.id) {
+                        isUnused = false;
+                        return;
+                    }
+                });
         });
     });
-    return isUnused;
+    return isUnused.textResourceBindings && isUnused.options;
 }
