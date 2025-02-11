@@ -10,7 +10,13 @@ export function getValueFromDataKey(data, dataKey) {
     }
     const path = dataKey?.split(/\.|\[|\]/).filter(Boolean);
     for (let i = 0; i < path.length; i++) {
-        data = data[path[i]];
+        const consolidatedPath = path.slice(i).join(".");
+        if (data[consolidatedPath] !== undefined) {
+            data = data[consolidatedPath];
+            break;
+        } else {
+            data = data[path[i]];
+        }
     }
     return data;
 }
