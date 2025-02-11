@@ -1,6 +1,6 @@
 @font-face {
     font-family: "Roboto Flex";
-    src: url(/src/fonts/RobotoFlex.woff2) format("woff2");
+    src: url(fonts/RobotoFlex.woff2) format("woff2");
 }
 
 :root {

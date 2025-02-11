@@ -2,10 +2,11 @@
     "name": "altinn-studio-frontend-validator",
     "packageManager": "yarn@4.5.0",
     "scripts": {
-        "start": "http-server -o src",
-        "build": "webpack --mode production && yarn copy-html && yarn copy-css",
+        "start": "http-server -o src ",
+        "build": "webpack --mode production && yarn copy-html && yarn copy-css && yarn copy-fonts",
         "copy-html": "copyfiles --flat src/index.html docs",
-        "copy-css": "copyfiles --flat src/main.css docs"
+        "copy-css": "copyfiles --flat src/main.css docs",
+        "copy-fonts": "copyfiles --flat src/fonts/RobotoFlex.woff2 docs/fonts"
     },
     "devDependencies": {
         "copyfiles": "^2.4.1",
