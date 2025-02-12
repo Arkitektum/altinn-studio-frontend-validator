@@ -1,3 +1,8 @@
+import {
+    batchProcess,
+    generateObjectWithKeys,
+    removeFileExtension,
+} from "./dataHelpers.js";
 import { getValueFromDataKey } from "./resourceHelpers.js";
 
 const systemResourceKeys = ["pdfPreviewText", "appOwner", "appName"];
@@ -63,9 +68,20 @@ function validateFile(file, type, uploadedFiles) {
         let appOwnerIsEmpty = false;
         let hasAppName = false;
         let appNameIsEmpty = false;
+        const pageTitleResourceKeys = batchProcess(
+            Object.keys(uploadedFiles?.layoutFiles),
+            removeFileExtension
+        );
+        const hasPageTitles = generateObjectWithKeys(
+            pageTitleResourceKeys,
+            false
+        );
         file?.resources?.forEach((resource) => {
             const isSystemResource = systemResourceKeys.includes(resource.id);
-            if (!isSystemResource) {
+            const isPageTitleResource = pageTitleResourceKeys.includes(
+                resource.id
+            );
+            if (!isSystemResource && !isPageTitleResource) {
                 if (resourceIsUnused(resource, uploadedFiles)) {
                     validationMessages.warnings.push(
                         `Resource "${resource.id}" is unused`
@@ -81,6 +97,8 @@ function validateFile(file, type, uploadedFiles) {
                 } else if (resource.id === "appName") {
                     hasAppName = true;
                     appNameIsEmpty = resource.value === "";
+                } else if (isPageTitleResource) {
+                    hasPageTitles[resource.id] = true;
                 }
             }
         });
@@ -110,6 +128,14 @@ function validateFile(file, type, uploadedFiles) {
             validationMessages.warnings.push(
                 'Resource with id "appName" is empty'
             );
+        } else if (Object.values(hasPageTitles).includes(false)) {
+            Object.keys(hasPageTitles).forEach((pageTitleResourceKey) => {
+                if (!hasPageTitles[pageTitleResourceKey]) {
+                    validationMessages.warnings.push(
+                        `Page title resource with id "${pageTitleResourceKey}" is missing`
+                    );
+                }
+            });
         }
     } else if (type === "layoutFiles") {
         file?.data?.layout?.forEach((layoutComponent) => {
